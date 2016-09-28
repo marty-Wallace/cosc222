@@ -1,4 +1,15 @@
 #!/bin/bash
+
+#author Martin Wallace
+#date Sept 27 2016
+#Utility script to wrap the idgen.cc program. 
+#Used for generating 9 digit student ids randomly for COSC 222 lab 2. 
+
+#args
+# -n [number of ids to generate]
+# -d [number of digits to be random from the right] 
+# -u flag to ensure that numbers are unique 
+
 touch stu_id/students.txt
 U=0
 N=0
@@ -24,5 +35,6 @@ fi
 
 stu_id/./idgen -n "$N" -d "$D" 
 if [[ "$U" -gt 0 ]]; then
-	mv stu_id/students.txt stu_id/students2.txt && cat stu_id/students2.txt | sort | uniq > stu_id/students.txt && rm stu_id/students2.txt
+	mv stu_id/students.txt stu_id/students2.txt && cat stu_id/students2.txt \
+	| sort | uniq | sort -r > stu_id/students.txt && rm stu_id/students2.txt
 fi

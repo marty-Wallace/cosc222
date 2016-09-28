@@ -1,3 +1,11 @@
+/*
+	Program to randomly generate student id's with a given amount of 
+	possibly unique digits. 
+	Generates a random seed then based on the number of digits that 
+	are supposed to be random , d, it generates random-ish numbers 
+	and modulo's them by 10^d. 
+	Outputs numbers to file "stu_id/students.txt"
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -14,6 +22,7 @@ int getLength(int n) {
 }
 		
 int main(int argc, char *argv[] ) {
+	srand (time(NULL));
 	//initialize random seed
 	int n = 0; // number of ids to gen
 	int d = 0; // number of digits from the right to gen randomly 
@@ -38,7 +47,12 @@ int main(int argc, char *argv[] ) {
 	file.open("stu_id/students.txt");
 	for(int i = 0; i < n; i++) {
 		int prefix = 300189833  / (int)pow(10, d);	
-		int append = rand() % (int)pow(10, d);
+
+		//since rand() only produces numbers up to 2^15
+		//we will bitshift the first random number 15 bits then add it to another number
+		// this way we have a 30 bit 'random' integer
+		int append = ((rand() << 15) + rand()) % (int)pow(10, d);
+
 		file << prefix ;
 		int length = getLength(append);
 		if(d != 1) {
