@@ -1,5 +1,7 @@
 #include <iostream> 
 #include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -28,28 +30,22 @@ void heapify(int v[], int l, int s) {
 		//we will continue to "walk down" the tree
 		while(left < l) {
 			//check the case that there is a left child but not a right child
-			if(right < l){
-				//if the right child is greater than the left child and greater than the parent.
-				//swap them and then set the index of the new parent to check as the index of the child
-				if(v[left] < v[right] && v[right] > v[parent]) {
-					swap(v, parent, right);
-					parent = right;
-				//now check left vs parent
-				}else if(v[left] > v[right] && v[left] > v[parent]){
-					swap(v, parent, left);
-					parent = left;
-				//neither was greater, we have a local heap
-				}else{
-					parent = l;
-				}
-			// no right child, check if left child is greater
+			//then check to see if value in right is > left 
+			//if right is greater than left and parent then swap them 
+			if(right < l && v[left] < v[right] && v[right] > v[parent]) {
+				swap(v, parent, right);
+				parent = right;
+			}
+			//either no right child or right child is less than left child
+			// check if left child is greater
 			// if it is then swap with parent
-			}else if(v[left] > v[parent]){
+			else if(v[left] > v[parent]){
 				swap(v, left, parent);
 				parent = left;
+			}
 			//left child is smaller, and their is no right child
 			// we have a local heap
-			}else{
+			else{
 				parent = l;
 			}
 			//set new left and right values for the new parent
@@ -69,8 +65,7 @@ void sort(int v[], int l) {
 	heapify(v, l, (l-1)/2);
 	//now that we are heapified we can swap out the root node for the bottom node
 	//reduce the length by one and continue on 
-	//but now that we have a heap already we only need to re-heapify the root node
-	//rather than starting from the bottom node
+	//each  time we swap out the root node we must reheapify starting from the root node. 
 	swap(v, 0, --l);
 	while(l > 0) {
 		heapify(v, l, 0);
@@ -95,7 +90,8 @@ void printArr(int nums[], int l) {
 	main funtion, create an array and sort it. 
 */
 int main() {
-	int x = 100000;
+	srand (time(NULL));    
+	int x = 100;
 	int nums[x];
 	for(int i = 0; i < x; i++) {
 		nums[i] = x-i;
